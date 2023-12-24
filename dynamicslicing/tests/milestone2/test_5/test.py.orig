@@ -1,0 +1,18 @@
+x = 10
+t = y = x
+a, b = (5, 2)
+c = a + b
+d = c * 2
+e = d - 3
+total = 0
+total += a
+total += d # slicing criterion
+x = [1, 2, 3, 4]
+y = x[:]
+y[0] += 5
+y[1] = x[2]
+my_dictionary = {"name": "John Doe", "age": 30, "occupation": "Software Engineer"}
+name = my_dictionary["name"]
+(f, g) = (c, d)
+(g) = e
+[h, i] = (y[1], y[3])

@@ -1,0 +1,285 @@
+{
+  "next_iid": 40,
+  "iid_to_location": {
+    "0": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 1,
+      "start_column": 0,
+      "end_line": 1,
+      "end_column": 6
+    },
+    "1": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 2,
+      "start_column": 8,
+      "end_line": 2,
+      "end_column": 9
+    },
+    "2": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 2,
+      "start_column": 0,
+      "end_line": 2,
+      "end_column": 9
+    },
+    "3": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 3,
+      "start_column": 0,
+      "end_line": 3,
+      "end_column": 13
+    },
+    "4": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 4,
+      "start_column": 4,
+      "end_line": 4,
+      "end_column": 5
+    },
+    "5": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 4,
+      "start_column": 8,
+      "end_line": 4,
+      "end_column": 9
+    },
+    "6": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 4,
+      "start_column": 0,
+      "end_line": 4,
+      "end_column": 9
+    },
+    "7": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 5,
+      "start_column": 4,
+      "end_line": 5,
+      "end_column": 5
+    },
+    "8": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 5,
+      "start_column": 0,
+      "end_line": 5,
+      "end_column": 9
+    },
+    "9": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 6,
+      "start_column": 4,
+      "end_line": 6,
+      "end_column": 5
+    },
+    "10": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 6,
+      "start_column": 0,
+      "end_line": 6,
+      "end_column": 9
+    },
+    "11": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 7,
+      "start_column": 0,
+      "end_line": 7,
+      "end_column": 9
+    },
+    "12": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 8,
+      "start_column": 9,
+      "end_line": 8,
+      "end_column": 10
+    },
+    "13": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 8,
+      "start_column": 0,
+      "end_line": 8,
+      "end_column": 10
+    },
+    "14": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 9,
+      "start_column": 9,
+      "end_line": 9,
+      "end_column": 10
+    },
+    "15": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 9,
+      "start_column": 0,
+      "end_line": 9,
+      "end_column": 10
+    },
+    "16": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 10,
+      "start_column": 0,
+      "end_line": 10,
+      "end_column": 16
+    },
+    "17": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 11,
+      "start_column": 4,
+      "end_line": 11,
+      "end_column": 5
+    },
+    "18": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 11,
+      "start_column": 4,
+      "end_line": 11,
+      "end_column": 8
+    },
+    "19": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 11,
+      "start_column": 0,
+      "end_line": 11,
+      "end_column": 8
+    },
+    "20": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 12,
+      "start_column": 0,
+      "end_line": 12,
+      "end_column": 1
+    },
+    "21": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 12,
+      "start_column": 0,
+      "end_line": 12,
+      "end_column": 4
+    },
+    "22": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 12,
+      "start_column": 0,
+      "end_line": 12,
+      "end_column": 9
+    },
+    "23": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 13,
+      "start_column": 7,
+      "end_line": 13,
+      "end_column": 8
+    },
+    "24": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 13,
+      "start_column": 7,
+      "end_line": 13,
+      "end_column": 11
+    },
+    "25": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 13,
+      "start_column": 0,
+      "end_line": 13,
+      "end_column": 11
+    },
+    "26": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 14,
+      "start_column": 0,
+      "end_line": 14,
+      "end_column": 82
+    },
+    "27": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 15,
+      "start_column": 7,
+      "end_line": 15,
+      "end_column": 20
+    },
+    "28": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 15,
+      "start_column": 7,
+      "end_line": 15,
+      "end_column": 28
+    },
+    "29": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 15,
+      "start_column": 0,
+      "end_line": 15,
+      "end_column": 28
+    },
+    "30": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 16,
+      "start_column": 10,
+      "end_line": 16,
+      "end_column": 11
+    },
+    "31": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 16,
+      "start_column": 13,
+      "end_line": 16,
+      "end_column": 14
+    },
+    "32": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 16,
+      "start_column": 0,
+      "end_line": 16,
+      "end_column": 15
+    },
+    "33": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 17,
+      "start_column": 6,
+      "end_line": 17,
+      "end_column": 7
+    },
+    "34": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 17,
+      "start_column": 0,
+      "end_line": 17,
+      "end_column": 7
+    },
+    "35": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 18,
+      "start_column": 10,
+      "end_line": 18,
+      "end_column": 11
+    },
+    "36": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 18,
+      "start_column": 10,
+      "end_line": 18,
+      "end_column": 14
+    },
+    "37": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 18,
+      "start_column": 16,
+      "end_line": 18,
+      "end_column": 17
+    },
+    "38": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 18,
+      "start_column": 16,
+      "end_line": 18,
+      "end_column": 20
+    },
+    "39": {
+      "file": "/Users/yonatan/Documents/Uni assignments/Program Analysis/project/dynamicslicing/tests/milestone2/test_5/test.py.orig",
+      "start_line": 18,
+      "start_column": 0,
+      "end_line": 18,
+      "end_column": 21
+    }
+  }
+}
