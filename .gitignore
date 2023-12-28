@@ -12,9 +12,7 @@ workspace.code-workspace
 build/
 dist/
 .pytest_cache/
-test/targetPrograms/*.orig
-.hypothesis/
-test/PythonRepos/
+
 
 # vscode
 *.code-workspace
