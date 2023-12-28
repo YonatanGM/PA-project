@@ -1,7 +1,7 @@
 from typing import List
 import libcst as cst
 from libcst._flatten_sentinel import FlattenSentinel
-from libcst._nodes.statement import BaseStatement, If, SimpleStatementLine
+from libcst._nodes.statement import BaseStatement, If, SimpleStatementLine, EmptyLine
 from libcst._removal_sentinel import RemovalSentinel
 from libcst.metadata import (
     ParentNodeProvider,
@@ -42,9 +42,8 @@ class StatementRemover(cst.CSTTransformer):
 
     def on_leave(self, original_node: cst.CSTNode, updated_node: cst.CSTNode) -> cst.CSTNode | RemovalSentinel | FlattenSentinel[BaseStatement]:
         location = self.get_metadata(PositionProvider, original_node)
-        if isinstance(updated_node, SimpleStatementLine | cst.If | cst.For | cst.While):
+        if isinstance(updated_node, EmptyLine | SimpleStatementLine | cst.If | cst.For | cst.While):
             if location.start.line in self.lines_to_remove:
-                # print(location.start.line)
                 return RemovalSentinel.REMOVE
         return updated_node
         
@@ -63,25 +62,3 @@ def remove_lines(code: str, lines_to_remove: List[int]) -> str:
     new_syntax_tree = wrapper.visit(code_modifier)
     return new_syntax_tree.code
     
-
-
-#class SimpleStatementRemover(m.MatcherDecoratableTransformer):
-#    """
-#    Remove every simple statement line on an odd line.
-#    """
-#    METADATA_DEPENDENCIES = (
-#        ParentNodeProvider,
-#        PositionProvider,
-#    )
-#    def __init__(self, lines_to_remove: List[int]):
-#        super().__init__()
-#        self.lines_to_remove = lines_to_remove
-#
-#    def leave_SimpleStatementLine(self, original_node: SimpleStatementLine, updated_node: SimpleStatementLine) -> BaseStatement | FlattenSentinel[BaseStatement] | RemovalSentinel:
-#        location = self.get_metadata(PositionProvider, original_node)
-#        if location.start.line in self.lines_to_remove:
-#            print(location.start.line)
-#            return cst.FlattenSentinel([])
-#
-#        return updated_node
-#
