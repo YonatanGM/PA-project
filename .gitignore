@@ -11,7 +11,10 @@ workspace.code-workspace
 *.xml
 build/
 dist/
-
+.pytest_cache/
+.DS_Store
+tests/
+__pycache__/
 # vscode
 *.code-workspace
 
