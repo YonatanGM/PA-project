@@ -10,8 +10,7 @@ from os.path import dirname, join
 
 
 class Slice(BaseAnalysis):
-#    def __init__(self, source_path):
-#        pass
+
     def __init__(self, source_path):
         super().__init__()
         self.source_path = source_path
@@ -23,13 +22,7 @@ class Slice(BaseAnalysis):
         self.cdg = {}
         #
         self.visited_branches = []
-        # stores the line numbers of the code where conditional statements are executed
-        self.conditional_lines_trace = []
-    
-#    @property
-#    def last_conditional(self): # getter method
-#        return self.conditional_lines_trace[-1] if self.conditional_lines_trace else None
-    
+
     def write(
         self, dyn_ast: str, iid: int, old_vals: List[Callable], new_val: Any
     ) -> Any:
@@ -49,7 +42,6 @@ class Slice(BaseAnalysis):
                         self.ddg.setdefault(location[1], set()).add(self.definitions[target.target.value.value])
                     self.definitions[target.target.value.value] = location[1]
                 else:
-#                    print(node)
                     for name in m.findall(target, m.Name()):
                         self.definitions[name.value] = location[1]
                     
@@ -88,16 +80,6 @@ class Slice(BaseAnalysis):
             self.ddg.setdefault(location[1], set()).add(self.definitions[node.value.value])
         self.definitions[node.value.value] = location[1]
         pass
-
-    # add control flow dependency edges
-#    def enter_control_flow(self, dyn_ast: str, iid: int, cond_value: bool) -> Optional[bool]:
-#        ast, iids = self._get_ast(dyn_ast)
-#        location = iids.iid_to_location[iid]
-#        node = get_node_by_location(ast, location)
-#
-#        if location[1] not in self.conditional_lines_trace:
-#            self.conditional_lines_trace.append(location[1])
-            
        
     def enter_control_flow(self, dyn_ast: str, iid: int, cond_value: bool) -> Optional[bool]:
         if iid in self.visited_branches:
@@ -125,54 +107,55 @@ class Slice(BaseAnalysis):
             pass
             
         self.visited_branches.append(iid)
+        
+    def get_relevant_lines(self, start_line: int, seen: List[int]=None) -> Set[int]:
+        """
+        Returns a set of line numbers that start_line is either data or control dependent on
+        by traversing the data and control flow graphs.
 
-    
-    
-    def lines_to_keep(self, s1: int, visited: List[int]=[]) -> Set[int]:
-        lines = {s1}
-        # also consider dataflow edges to nodes s1 is control dependent on
-#        print(self.ddg.get(s1, set()) | self.cdg.get(s1, set()))
-        visited.append(s1)
-        for s2 in self.ddg.get(s1, set()) | self.cdg.get(s1, set()):
-            if not s2 in visited:
-                lines |= self.lines_to_keep(s2)
-        return lines
-    
+        Parameters:
+        start_line (int): The line number to start the slicing from.
+        seen (List[int], optional): A list of line numbers that have been seen. Defaults to None.
+
+        Returns:
+        Set[int]: A set of line numbers that are relevant for the slicing criterion.
+        """
+        if seen is None:
+            seen = []
+        relevant_lines = {start_line}
+        # Mark start_line as seen
+        seen.append(start_line)
+        # Loop through the lines that have a data or control flow edge to start_line
+        for line in self.ddg.get(start_line, set()) | self.cdg.get(start_line, set()):
+            if not line in seen:
+            # Recursively find the lines that have a data or control flow edge to start_line and add them to the set
+                relevant_lines |= self.get_relevant_lines(line, seen)
+        return relevant_lines
+        
+        
     def end_execution(self):
         ast, iids = self._get_ast(self.source_path)
         wrapper = cst.MetadataWrapper(ast)
-        
         try:
             comment_node = m.findall(wrapper, m.Comment(value="# slicing criterion"))[0]
-            location = wrapper.resolve(meta.PositionProvider)
-            criterion_line = location[comment_node].start.line
+            location_metadata = wrapper.resolve(meta.PositionProvider)
+            criterion_line = location_metadata[comment_node].start.line
         except IndexError:
             print("slicing criterion not specified")
             return
             
         try:
             slice_me_func = m.findall(wrapper, m.FunctionDef(m.Name(value="slice_me")))[0].body
-#            print(slice_me_func)
         except IndexError:
             return
-#        print(location[slice_me_func])
-#        print(criterion_line)
-   
-        print(self.ddg)
-        print(self.cdg)
-#        print(self.lines_to_keep(criterion_line))
-        lines_to_remove = set(range(location[slice_me_func].start.line, location[slice_me_func].end.line+1))\
-                            .difference(self.lines_to_keep(criterion_line))
-
+        
+        # Get the lines that are not relevant for the slicing criterion within the slice_me function,
+        # by subtracting the set of relevant lines from the set of all lines in the function
+        lines_to_remove = set(range(location_metadata[slice_me_func].start.line, location_metadata[slice_me_func].end.line+1))\
+                            .difference(self.get_relevant_lines(criterion_line))
+                            
+        # write the sliced program
         sliced_code = remove_lines(ast.code, lines_to_remove)
-#        print(self.lines_to_keep(criterion_line))
-        dir = dirname(self.source_path)
-        path = join(dir, "sliced.py")
-
-        print(ast.code)
-        print("___________________________________")
-        print(sliced_code)
-
+        path = join(dirname(self.source_path), "sliced.py")
         with open(path, "w") as f:
             f.write(sliced_code)
-
