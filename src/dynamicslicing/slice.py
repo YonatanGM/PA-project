@@ -132,10 +132,10 @@ class Slice(BaseAnalysis):
                 relevant_lines |= self.get_relevant_lines(line, seen)
         return relevant_lines
         
-        
     def end_execution(self):
         ast, iids = self._get_ast(self.source_path)
         wrapper = cst.MetadataWrapper(ast)
+        
         try:
             comment_node = m.findall(wrapper, m.Comment(value="# slicing criterion"))[0]
             location_metadata = wrapper.resolve(meta.PositionProvider)
@@ -158,4 +158,6 @@ class Slice(BaseAnalysis):
         sliced_code = remove_lines(ast.code, lines_to_remove)
         path = join(dirname(self.source_path), "sliced.py")
         with open(path, "w") as f:
+#            f.write("a='{}{}{}'".format(self.get_relevant_lines(criterion_line), self.cdg, self.ddg))
             f.write(sliced_code)
+
