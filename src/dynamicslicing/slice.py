@@ -10,35 +10,28 @@ from os.path import dirname, join
 
 
 class Slice(BaseAnalysis):
-#
+
     def __init__(self, source_path):
         super().__init__()
         self.source_path = source_path
-#        self.source_path = "/Users/yonatan/Documents/Uni assignments/Program Analysis/dynamicslicing/tests/milestone3/test_8/program.py.orig"
         self.definitions = {}
-         # data dependency graph
-        self.ddg = {}
-        # control dependency graph
-        self.cdg = {}
-        #
-        self.visited_branches = []
+         # data & control dependency graph
+        self.graph = {}
         # aliase stuff
         self.points_to = {}
+        self.branching_lines = []
 
-#    def __init__(self):
-#        super().__init__()
-##        self.source_path = source_path
-#        self.source_path = "/Users/yonatan/Documents/Uni assignments/Program Analysis/dynamicslicing/tests/milestone2/test_12/program.py.orig"
-##        self.source_path = "/Users/yonatan/Documents/Uni assignments/Program Analysis/dynamicslicing/tests/milestone3/test_1/atest2.py.orig"
-#        self.definitions = {}
-#         # data dependency graph
-#        self.ddg = {}
-#        # control dependency graph
-#        self.cdg = {}
-#        #
-#        self.visited_branches = []
-#        # aliase stuff
-#        self.points_to = {}
+#     def __init__(self):
+#         super().__init__()
+# #        self.source_path = source_path
+#         self.source_path = "/Users/yonatan/Documents/Uni assignments/Program Analysis/dynamicslicing/tests/milestone3/test_4/program.py.orig"
+# #        self.source_path = "/Users/yonatan/Documents/Uni assignments/Program Analysis/dynamicslicing/tests/milestone3/test_1/atest2.py.orig"
+#         self.definitions = {}
+#          # data & control dependency graph
+#         self.graph = {}
+#         # aliase stuff
+#         self.points_to = {}
+#         self.branching_lines = []
 
     def write(
         self, dyn_ast: str, iid: int, old_vals: List[Callable], new_val: Any
@@ -56,13 +49,13 @@ class Slice(BaseAnalysis):
         if m.matches(node, m.Assign()):
             for target in node.targets:
                 if m.matches(target.target, m.Subscript() | m.Attribute()):
-                    self.addEdge(target.target.value.value, location[1])
+                    self.add_edge(target.target.value.value, location[1])
                     # consider aliases of the target, i.e, identifiers that point to the same object
                     # need to handle them in the same way as the target
                     for identifier in self.get_aliases(target.target.value.value):
                         # add data dependence edges from previous definitions to the current line
-                        # update definition line numbers for the aliases
-                        self.addEdge(identifier, location[1])
+                        # and update definition line numbers for the aliases
+                        self.add_edge(identifier, location[1])
                     self.points_to.update({target.target.value.value: id(new_val)} if points_to_mutable else {})
                 
                 else:
@@ -72,13 +65,13 @@ class Slice(BaseAnalysis):
                     
         elif m.matches(node, m.AugAssign()):
             if m.matches(node.target, m.Subscript() | m.Attribute()):
-                self.addEdge(node.target.value.value, location[1])
+                self.add_edge(node.target.value.value, location[1])
                 for identifier in self.get_aliases(node.target.value.value):
-                    self.addEdge(identifier, location[1])
+                    self.add_edge(identifier, location[1])
                 self.points_to.update({node.target.value.value: id(new_val)} if points_to_mutable else {})
             else:
                 for name in m.findall(node.target, m.Name()):
-                    self.addEdge(node.target.value, location[1])
+                    self.add_edge(node.target.value, location[1])
                     self.points_to.update({name.target.value: id(new_val)} if points_to_mutable else {})
 
     def read_identifier(self, dyn_ast: str, iid: int, val: Any) -> Any:
@@ -88,58 +81,42 @@ class Slice(BaseAnalysis):
         # not inside slice_me func
         if not get_parent_by_type(ast, location, m.FunctionDef(m.Name(value="slice_me"))):
             return
-        self.addEdge(node.value, location[1], update_definition=False)
+        self.add_edge(node.value, location[1], update_definition=False)
         
     def read_attribute(self, dyn_ast: str, iid: int, base: Any, name: str, val: Any) -> Any:
         ast, iids = self._get_ast(dyn_ast)
         location = iids.iid_to_location[iid]
         node = get_node_by_location(ast, location)
-#        print(id(val))
         if not get_parent_by_type(ast, location, m.FunctionDef(m.Name(value="slice_me"))):
             return
         if not get_parent_by_type(ast, location, m.Call(func=m.Attribute(value=m.Name(value=node.value.value)))):
             return
         # must be method call
         # print(node.attr.value)
-        self.addEdge(node.value.value, location[1])
+        self.add_edge(node.value.value, location[1])
         # handle aliases the same way
         for identifier in self.get_aliases(node.value.value):
-            self.addEdge(identifier, location[1])
-        pass
+            self.add_edge(identifier, location[1])
        
     def enter_control_flow(self, dyn_ast: str, iid: int, cond_value: bool) -> Optional[bool]:
-        if iid in self.visited_branches:
-            return
-            
         ast, iids = self._get_ast(dyn_ast)
         location = iids.iid_to_location[iid]
-        node = get_node_by_location(ast, location)
+        if location[1] not in self.branching_lines:
+            self.branching_lines.append(location[1])
         
-        wrapper = cst.MetadataWrapper(ast)
-        position_metadata = wrapper.resolve(meta.PositionProvider)
-        simple_statement_matcher = m.SimpleStatementLine(
-            metadata=m.MatchMetadataIfTrue(
-                meta.PositionProvider,
-                lambda position: position.start.line in range(location[1], location[3]+1),
-            )
-        )
-
-        if(m.matches(node, m.If() | m.While() | m.For())):
-            for statement in m.findall(wrapper, simple_statement_matcher):
-                self.cdg.setdefault(position_metadata[statement].start.line, set()).add(location[1])
-        elif(m.matches(node, m.While())):
-            pass
-        elif(m.matches(node, m.For())):
-            pass
-            
-        self.visited_branches.append(iid)
-        
-        
-    def addEdge(self, identifier: str, to_line: int, *, update_definition: bool=True) -> None:
+    def exit_control_flow(self, dyn_ast: str, iid: int) -> None:
+        self.branching_lines.pop()
+      
+    def add_edge(self, identifier: str, to_line: int, *, update_definition: bool=True) -> None:
         if identifier in self.definitions:
-            self.ddg.setdefault(to_line, set()).add(self.definitions[identifier])
+            self.graph.setdefault(to_line, set()).add(self.definitions[identifier])
         if update_definition:
             self.definitions[identifier] = to_line
+
+        for line in self.branching_lines: 
+            self.graph.setdefault(to_line, set()).add(line)
+            
+
             
     def get_aliases(self, identifier: str) -> List[str]:
         if identifier in self.points_to:
@@ -166,7 +143,7 @@ class Slice(BaseAnalysis):
         seen.append(start_line)
 #        print(relevant_lines)
         # Loop through the lines that have a data or control flow edge to start_line
-        for line in self.ddg.get(start_line, set()) | self.cdg.get(start_line, set()):
+        for line in self.graph.get(start_line, set()):
             if not line in seen:
                 # Recursively find the lines that have a data or control flow edge to start_line and add them to the set
                 relevant_lines |= self.get_relevant_lines(line, seen)
@@ -199,8 +176,7 @@ class Slice(BaseAnalysis):
         sliced_code = remove_lines(ast.code, lines_to_remove)
         path = join(dirname(self.source_path), "sliced.py")
         
-#        print("ddg: ", self.ddg)
-#        print("cdg: ", self.cdg)
+        print("ddg: ", self.graph)
 #        print("definitions: ", self.definitions)
 #        print("criterion line: ", criterion_line)
 #        print("relevant lines: ", self.get_relevant_lines(criterion_line))
